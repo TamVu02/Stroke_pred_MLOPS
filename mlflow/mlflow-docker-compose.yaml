@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  mlflow:
+    build:
+      context: ./mlflow_docker
+      args:
+        MLFLOW_VERSION: ${MLFLOW_VERSION}
+    container_name: mlflow
+    ports:
+      - "5001:5000"   # Host:Container
+    env_file: .env
+    volumes:
+      - mlflow_data:/mlflow
+volumes:
+  mlflow_data:

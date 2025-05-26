@@ -1,0 +1,12 @@
+{
+    "Age": 22,
+    "WorkType":"Private",
+    "Hypertension": 0,
+    "HeartDisease": 0,
+    "Married": "No",
+    "Gender": "Female",
+    "Residence": "Urban",
+    "Bmi": 18.4,
+    "GlucoseLevel": 89.6,
+    "Smoking": "never smoked"
+}
