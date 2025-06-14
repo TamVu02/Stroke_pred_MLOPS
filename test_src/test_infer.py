@@ -13,7 +13,9 @@ print(TestClient.__module__)
 
 def load_model():
     import mlflow
-    mlflow.set_tracking_uri("http://localhost:5001")  # override just for testing
+    import os
+    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5001"))
+    print(f"Using MLflow URI: {mlflow.get_tracking_uri()}")
     print(f'Using mlflow local, not host.docker.internal for testing')
     return mlflow.pyfunc.load_model("models:/stroke_prediction_model/Staging")
 

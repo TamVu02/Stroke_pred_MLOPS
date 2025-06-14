@@ -24,6 +24,9 @@ pipeline {
                     image 'python:3.9'
                 }
             }
+            environment {
+                MLFLOW_TRACKING_URI = "http://host.docker.internal:5001"
+            }
             steps {
                 echo 'Testing FastAPI app...'
                 sh '''
