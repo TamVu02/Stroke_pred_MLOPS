@@ -8,6 +8,7 @@ WORKDIR /app
 
 # Copy to working folder
 COPY . .
+ENV PYTHONPATH=/app
 
 #RUN apt-get update
 RUN pip install --upgrade pip && \
