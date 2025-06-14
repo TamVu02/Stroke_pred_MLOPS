@@ -8,13 +8,21 @@ from fastapi.testclient import TestClient
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 print(sys.path)
 from api_model_serving.app.main import app, model_loader
+import socket
 
-print(TestClient.__module__)      
+print(TestClient.__module__)
+
+def resolve_host_gateway():
+    try:
+        return socket.gethostbyname("host.docker.internal")
+    except socket.gaierror:
+        return "172.17.0.1"  # fallback for Linux Docker host
+
 
 def load_model():
     import mlflow
     import os
-    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5001"))
+    mlflow.set_tracking_uri(f"http://{resolve_host_gateway()}:5001")
     print(f"Using MLflow URI: {mlflow.get_tracking_uri()}")
     print(f'Using mlflow local, not host.docker.internal for testing')
     return mlflow.pyfunc.load_model("models:/stroke_prediction_model/Staging")
