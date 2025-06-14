@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY = 'api_model_serving/api_model_serving_api'
+        REGISTRY = 'tamvlb/api_model_serving_api'
         REGISTRY_CREDENTIAL = 'dockerhub'
         BUILD_NUMBER = 'latest'
     }
@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker image...'
-                    dockerImage = docker.build("${REGISTRY}:${BUILD_NUMBER}")
+                    dockerImage = docker.build("${REGISTRY}:${BUILD_NUMBER}", "api_model_serving")
                 }
             }
         }
@@ -63,7 +63,7 @@ pipeline {
             steps {
                 echo 'Deploying container...'
                 sh '''
-                    . api_model_serving/deploy.sh
+                    . /api_model_serving/deploy.sh
                     docker logs -f fastapi-app
                 '''
             }
