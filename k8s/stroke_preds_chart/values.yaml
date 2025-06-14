@@ -1,0 +1,4 @@
+image:
+  repository: tamvu02/stroke_pred_mlops
+  tag: "latest"
+  pullPolicy: Always

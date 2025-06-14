@@ -7,6 +7,14 @@ import numpy as np
 import os
 import mlflow
 from fastapi import Depends
+import sys
+import os
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.append(project_root)
+
+print(sys.path)
+
+from api_model_serving.jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
 
 
 # Logging
@@ -15,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 #Define fastAPI
 app = FastAPI()
+configure_tracer(app) 
 logger.info('Start running api...')
 @app.on_event("startup")
 def startup_event():
