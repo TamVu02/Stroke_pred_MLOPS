@@ -63,8 +63,10 @@ pipeline {
             steps {
                 echo 'Deploying container...'
                 sh '''
-                    . /api_model_serving/deploy.sh
-                    docker logs -f fastapi-app
+                    ls -la ./api_model_serving       # Optional: confirms file is there
+                    chmod +x ./api_model_serving/deploy.sh
+                    ./api_model_serving/deploy.sh
+                    docker logs -f api_model_serving_api
                 '''
             }
         }
