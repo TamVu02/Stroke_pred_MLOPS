@@ -7,7 +7,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY = 'tamvlb/api_model_serving_api'
+        REGISTRY = 'api_model_serving/api_model_serving_api'
         REGISTRY_CREDENTIAL = 'dockerhub'
         BUILD_NUMBER = 'latest'
     }
