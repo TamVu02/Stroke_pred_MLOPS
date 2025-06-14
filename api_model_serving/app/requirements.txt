@@ -11,3 +11,4 @@ opentelemetry-exporter-otlp
 opentelemetry-instrumentation-fastapi
 opentelemetry-instrumentation-requests
 pytest==8.3.5
+httpx==0.28.1
