@@ -17,7 +17,7 @@ pipeline {
                 sh 'docker --version'
             }
         }
-        
+
         stage('Test') {
             agent {
                 docker {
@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo 'Testing FastAPI app...'
                 sh '''
-                    pip install --no-cache-dir -r app/requirements.txt
+                    pip install --no-cache-dir -r api_model_serving/app/requirements.txt
                     pytest
                 '''
             }
@@ -59,7 +59,7 @@ pipeline {
             steps {
                 echo 'Deploying container...'
                 sh '''
-                    . deploy.sh
+                    . api_model_serving/deploy.sh
                     docker logs -f fastapi-app
                 '''
             }
