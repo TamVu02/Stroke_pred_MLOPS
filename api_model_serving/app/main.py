@@ -14,7 +14,7 @@ sys.path.append(project_root)
 
 print(sys.path)
 
-from api_model_serving.jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
+from jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
 
 
 # Logging
