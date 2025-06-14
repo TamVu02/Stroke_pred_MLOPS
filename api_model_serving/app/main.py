@@ -14,7 +14,7 @@ sys.path.append(project_root)
 
 print(sys.path)
 
-from jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
+from api_model_serving.jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
 
 
 # Logging
@@ -31,7 +31,8 @@ def startup_event():
 
 def model_loader():
 	#Mlflow settings
-	mlflow.set_tracking_uri("http://host.docker.internal:5001")
+	mlflow.set_tracking_uri("http://172.17.0.1:5001")  # Docker bridge IP
+
 	REGISTERED_MODEL_NAME = 'stroke_prediction_model'
 	STAGE_STATUS = 'Staging'
 	MODEL_URI = f"models:/{REGISTERED_MODEL_NAME}/{STAGE_STATUS}"
