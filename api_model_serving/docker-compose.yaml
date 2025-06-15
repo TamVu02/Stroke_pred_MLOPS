@@ -9,6 +9,7 @@ services:
       - "4318:4318"    # OTLP HTTP receiver
     command:
       - "--collector.otlp.enabled=true"
+      - "--collector.otlp.http.host-port=:4318"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:16686"]
       interval: 10s
