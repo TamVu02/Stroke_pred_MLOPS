@@ -9,12 +9,12 @@ import mlflow
 from fastapi import Depends
 import sys
 import os
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..',))
 sys.path.append(project_root)
 
 print(sys.path)
 
-from api_model_serving.jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
+from jaeger_tracing.instrument.traces.trace_fast_api import configure_tracer
 
 
 # Logging
