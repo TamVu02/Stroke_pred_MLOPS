@@ -1,21 +1,6 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  api:
-    build: .
-    container_name: fastapi-stroke-api
-    ports:
-      - "7000:7000"
-    depends_on:
-      - jaeger:
-        - condition: service_healthy
-    environment:
-      OTEL_EXPORTER_OTLP_ENDPOINT: "${JAEGER_URI}"
-      MLFLOW_TRACKING_URI: "${MLFLOW_TRACKING_URI}"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    restart: on-failure
-
   jaeger:
     image: jaegertracing/all-in-one:1.54
     container_name: jaeger
@@ -25,7 +10,20 @@ services:
     command:
       - "--collector.otlp.enabled=true"
     healthcheck:
-      - test: ["CMD", "wget", "--spider", "-q", "http://localhost:16686"]
-      - interval: 10s
-      - timeout: 5s
-      - retries: 5
+      test: ["CMD", "curl", "-f", "http://localhost:16686"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build: .
+    container_name: fastapi-stroke-api
+    ports:
+      - "7000:7000"
+    depends_on:
+      - jaeger  # Only wait for container to start (not healthy)
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4318/v1/traces
+      - MLFLOW_TRACKING_URI=http://host.docker.internal:5001
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
