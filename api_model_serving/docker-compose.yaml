@@ -9,7 +9,7 @@ services:
     depends_on:
       - jaeger
     environment:
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://172.17.0.1:4318 
+      - OTEL_EXPORTER_OTLP_ENDPOINT={JAEGER_URI}
       - MLFLOW_TRACKING_URI={MLFLOW_TRACKING_URI}
     extra_hosts:
       - "host.docker.internal:host-gateway"
