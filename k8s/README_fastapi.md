@@ -34,30 +34,3 @@ STATUS: deployed
 REVISION: 1
 TEST SUITE: None
 ```
-
-## How-to Guide Jaeger
-
-### Add Jaeger helm repo
-```shell
-helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
-helm repo update
-mkdir -p jaeger_chart
-cd jaeger_chart
-helm pull jaegertracing/jaeger --untar
-```
-
-### Install Jaeger using Helm
-```shell
-helm install jaeger-k8s ./jaeger \
-  --namespace monitoring \
-  -f ./jaeger/jaeger-values.yaml
-```
-Expected output:
-```shell
-NAME: jaeger-k8s
-LAST DEPLOYED: Mon Jun 16 23:41:20 2025
-NAMESPACE: monitoring
-STATUS: deployed
-REVISION: 1
-TEST SUITE: None
-```

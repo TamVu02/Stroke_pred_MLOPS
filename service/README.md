@@ -95,7 +95,7 @@ Make sure to install required plugins: Docker pipline
 ```shell
 cd elk/
 docker compose -f elk-docker-compose.yml up -d # Set up ELastic search and Kibana
-docker compose -f elk-docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up #Set up Filebeat
+docker compose -f elk-docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up # Set up Filebeat
 ```
 Access to services at
 ```shell
