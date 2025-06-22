@@ -66,7 +66,7 @@ pipeline {
                     ls -la ./src       # Optional: confirms file is there
                     chmod +x ./src/deploy.sh
                     ./src/deploy.sh
-                    timeout 60s docker logs -f stroke-pred-api || true
+                    timeout 60s docker logs -f stroke_pred_api || true
                 '''
             }
         }

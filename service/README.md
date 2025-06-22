@@ -90,6 +90,15 @@ http://localhost:8080/
 Make sure to install required plugins: Docker pipline
 ![Jenkins plugins](../references/images/jenkins_req_plugin.png)
 
+### Set up build,test and deploy
+Configure Jenkins Pipeline
+![Configure pipline](../references/images/jenkins_configure.png)
+Build JenkinsFile for CI/CD
+```shell
+Test using pytest -> Build Image -> Push Image to DockerHub -> Deploy FastAPI using deploy script in /src
+```
+![Pipeline CI/CD](../references/images/jenkins_pipline.png)
+
 ## ELK
 ### Set up services
 ```shell

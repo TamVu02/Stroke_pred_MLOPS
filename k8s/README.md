@@ -1,4 +1,5 @@
-This tutorial shows how to set up Prometheus and Grafana on k8s using helm
+# Set up and deploy services on K8S
+**This tutorial shows how to set up Prometheus, Grafana and FastAPI on k8s using helm**
 
 ## How-to Guide Prometheus
 
@@ -249,6 +250,44 @@ kubectl get secret --namespace monitoring grafana-k8s -o jsonpath="{.data.admin-
 
 ### Customize alert rules from prometheus
 ![](../references/images/grafana_prometheus_alert.png)
+
+## How-to Guide Fast API
+
+### Create namespace
+```shell
+kubectl create namespace deployed-api
+```
+Output:
+```shell
+namespace/deployed-api created
+```
+
+### Add the Helm chart
+```shell
+helm create stroke-api-chart
+cd stroke-api-chart
+```
+Remove unnecessary files:
+```shell
+rm templates/hpa.yaml templates/tests/* templates/ingress.yaml templates/serviceaccount.yaml
+```
+
+### Customize values.yaml
+
+
+### Install API helm chart
+```shell
+helm install stroke-api-k8s . -n deployed-api
+```
+Expected output:
+```shell
+NAME: stroke-api-k8s
+LAST DEPLOYED: Mon Jun 16 23:27:51 2025
+NAMESPACE: deployed-api
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+```
 
 
 
