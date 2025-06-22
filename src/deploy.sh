@@ -26,4 +26,4 @@ if [ -n "$existing_container" ]; then
 fi
 
 echo "Starting new container..."
-docker-compose -f ${DOCKER_COMPOSE_DIR} up -d
+docker compose -f ${DOCKER_COMPOSE_DIR} up -d
