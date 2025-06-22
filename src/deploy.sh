@@ -6,10 +6,10 @@ echo "Pulling latest image..."
 docker pull tamvlb/stroke_pred_api:latest
 
 echo "Stopping old container if exists..."
-docker stop tamvlb/stroke_pred_api:latest || true
+docker stop stroke_pred_api || true
 
 echo "Removing old container if exists..."
-docker rm tamvlb/stroke_pred_api:latest || true
+docker rm stroke_pred_api || true
 
 echo "Ensuring port 7000 is free..."
 # Kill any container using port 7000
@@ -21,4 +21,4 @@ if [ -n "$existing_container" ]; then
 fi
 
 echo "Starting new container..."
-docker run -d -p 7000:7000 --name tamvlb/stroke_pred_api tamvlb/stroke_pred_api:latest
+docker run -d -p 7000:7000 --name stroke_pred_api tamvlb/stroke_pred_api:latest
