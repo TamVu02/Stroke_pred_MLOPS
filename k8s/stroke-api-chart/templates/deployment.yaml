@@ -1,0 +1,28 @@
+{{- if .Values.api.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stroke-api-k8s
+  labels:
+    app: api
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.api.containerPort }}
+          env:
+            {{- range .Values.api.env }}
+            - name: {{ .name }}
+              value: "{{ .value }}"
+            {{- end }}
+{{- end }}

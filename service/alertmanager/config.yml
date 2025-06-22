@@ -1,0 +1,14 @@
+route:
+  repeat_interval: 15s
+  receiver: gmail-notifications  # fixed here
+
+receivers:
+- name: 'gmail-notifications'
+  email_configs:
+  - to: tamvu1102.697@gmail.com
+    from: tamvu1102.697@gmail.com
+    smarthost: smtp.gmail.com:587
+    auth_username: tamvu1102.697@gmail.com
+    auth_identity: tamvu1102.697@gmail.com
+    auth_password: TZ@1102697K
+    send_resolved: true

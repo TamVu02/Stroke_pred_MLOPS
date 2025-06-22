@@ -1,0 +1,18 @@
+api:
+  enabled: true
+  replicaCount: 3
+  image:
+    repository: tamvlb/stroke-pred-api
+    tag: latest
+  containerPort: 7000
+  env:
+    - name: MLFLOW_TRACKING_URI
+      value: http://host.minikube.internal:5001
+
+service:
+  type: NodePort
+  port: 7000
+  targetPort: 7000
+
+ingress:
+  enabled: false

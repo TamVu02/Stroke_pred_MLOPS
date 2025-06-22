@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  model_predict_api:
+    build: .
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
+    container_name: ${CONTAINER_NAME}
+    restart: unless-stopped
+    ports:
+      - "7000:7000"
+      - "8001:8001"
+    environment:
+      - MLFLOW_TRACKING_URI=${MLFLOW_URI}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

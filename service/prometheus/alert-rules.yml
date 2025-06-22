@@ -1,0 +1,45 @@
+groups:
+- name: System alerts
+  rules:
+  - alert: NodeOutOfMemory
+    expr: node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes * 100 < 5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Node out of memory
+      description: Node memory has reached {{ humanize $value}}%
+  - alert: HighCPUUsage
+    expr: avg(rate(process_cpu_seconds_total[1m])) > 0.9
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High CPU usage on {{ $labels.instance }}"
+      description: "CPU usage is above 90% for 2 minutes on {{ $labels.instance }}."
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Instance {{ $labels.instance }} is down"
+      description: "{{ $labels.job }} on {{ $labels.instance }} has been unreachable for more than 1 minute."
+  - alert: HighMemoryUsage
+    expr: (node_memory_Active_bytes / node_memory_MemTotal_bytes) > 0.85
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "High memory usage on {{ $labels.instance }}"
+
+- name: Containers
+  rules:
+  - alert: JenkinsHighMemory
+    expr: sum(rate(container_cpu_usage_seconds_total{name="jenkins"}[5m]))*100 > 2
+    for: 30s
+    labels:
+      severity: warning
+    annotations:
+      summary: Jenkins high memory usage
+      description: Jenkins memory consumption is at {{ humanize $value}}%

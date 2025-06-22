@@ -1,0 +1,17 @@
+mlflow==2.2.0
+catboost==1.2.7
+numpy==1.26.4
+pandas==2.2.3
+fastapi==0.115.12
+pydantic==1.10.22
+uvicorn==0.22.0
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-exporter-otlp
+opentelemetry-instrumentation-fastapi
+opentelemetry-instrumentation-requests
+opentelemetry-exporter-prometheus
+opentelemetry-instrumentation-asgi
+pytest==8.3.5
+starlette==0.46.2
+httpx==0.28.1
