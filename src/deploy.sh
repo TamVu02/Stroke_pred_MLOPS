@@ -28,4 +28,4 @@ fi
 echo "Starting new container..."
 echo $DOCKER_COMPOSE_DIR
 set -x
-docker compose -f ${DOCKER_COMPOSE_DIR} up -d
+docker-compose-f ${DOCKER_COMPOSE_DIR} up -d
