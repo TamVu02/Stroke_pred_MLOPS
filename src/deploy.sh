@@ -1,6 +1,10 @@
 #!/bin/bash
 
 export DOCKER_COMPOSE_DIR=./service/model_api_serving/docker-compose.yaml
+export MLFLOW_URI=http://host.docker.internal:5000
+export IMAGE_NAME=tamvlb/stroke_pred_api
+export IMAGE_TAG=latest
+export CONTAINER_NAME=stroke_pred_api
 
 set -e  # exit on error
 
