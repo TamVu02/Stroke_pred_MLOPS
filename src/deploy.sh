@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DOCKER_COMPOSE_DIR=../service/model_api_serving/docker-compose.yaml
+export DOCKER_COMPOSE_DIR=./service/model_api_serving/docker-compose.yaml
 
 set -e  # exit on error
 
