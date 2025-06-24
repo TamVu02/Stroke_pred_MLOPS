@@ -11,5 +11,7 @@ services:
       - "8001:8001"
     environment:
       - MLFLOW_TRACKING_URI=${MLFLOW_URI}
+      - JAEGER_URI=${JAEGER_OTLP_URI}
+      - METRIC_EXPOSED_URI=${METRICS_URI}
     extra_hosts:
       - "host.docker.internal:host-gateway"

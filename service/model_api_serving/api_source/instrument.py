@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Request
 from opentelemetry import trace, metrics
 from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
@@ -17,7 +18,7 @@ trace.set_tracer_provider(
 )
 
 otlp_exporter = OTLPSpanExporter(
-    endpoint="http://host.docker.internal:4318/v1/traces",  # Jaeger OTLP endpoint
+    endpoint=os.getenv("JAEGER_URI", "http://host.docker.internal:4318/v1/traces"),  # Jaeger OTLP endpoint
 )
 span_processor = BatchSpanProcessor(otlp_exporter)
 trace.get_tracer_provider().add_span_processor(span_processor)
@@ -27,7 +28,7 @@ FastAPIInstrumentor.instrument_app(app)
 
 # Prometheus metrics
 # Expose Prometheus metrics on http://localhost:8001
-start_http_server(8001, addr="0.0.0.0")
+start_http_server(8001, addr=os.getenv("METRICS_URI", "0.0.0.0"))
 
 REQUEST_TIME = Summary("request_duration_seconds", "Time spent processing request")
 REQUEST_COUNTER = Counter("http_requests_total", "Total HTTP requests")

@@ -1,24 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: stroke-api-k8s
+  name: {{ .Release.Name }}
   labels:
-    app: api
+    app: {{ .Chart.Name }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.replicaCount }}  
   selector:
     matchLabels:
-      app: api
+      app: {{ .Chart.Name }} 
   template:
     metadata:
       labels:
-        app: api
+        app: {{ .Chart.Name }} 
     spec:
       containers:
-        - name: api
+        - name: {{ .Release.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.api.containerPort }}
+            - containerPort: {{ .Values.service.appPort }}  
           env:
             {{- range .Values.env }}
             - name: {{ .name }}

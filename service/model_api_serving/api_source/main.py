@@ -27,7 +27,7 @@ def startup_event():
 
 def model_loader():
 	#Mlflow settings
-	mlflow.set_tracking_uri("http://172.17.0.1:5001")  # Docker bridge IP
+	mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://172.17.0.1:5001"))  # Docker bridge IP
 
 	REGISTERED_MODEL_NAME = 'stroke_prediction_model'
 	STAGE_STATUS = 'Staging'

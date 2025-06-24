@@ -251,6 +251,11 @@ kubectl get secret --namespace monitoring grafana-k8s -o jsonpath="{.data.admin-
 ### Customize alert rules from prometheus
 ![](../references/images/grafana_prometheus_alert.png)
 
+## How-to Guide Mlflow
+helm create mlflow-chart
+cd mlflow-chart/
+rm templates/hpa.yaml templates/tests/* templates/ingress.yaml templates/serviceaccount.yaml
+
 ## How-to Guide Fast API
 
 ### Create namespace

@@ -1,6 +1,6 @@
 apiVersion: v2
-name: stroke-api-chart
-description: A Helm chart for Kubernetes
+name: stroke_api_chart
+description: A Helm chart for stroke prediction on Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -22,3 +22,7 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
+
+maintainers:
+  - email: tamvu1102.697@gmail.com
+    name: tamvlb

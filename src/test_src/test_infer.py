@@ -24,7 +24,6 @@ def load_model():
     import os
     mlflow.set_tracking_uri(f"http://{resolve_host_gateway()}:5001")
     print(f"Using MLflow URI: {mlflow.get_tracking_uri()}")
-    print(f'Using mlflow local, not host.docker.internal for testing')
     return mlflow.pyfunc.load_model("models:/stroke_prediction_model/Staging")
 
 app.dependency_overrides[model_loader] = load_model

@@ -1,17 +1,15 @@
 replicaCount: 3
 
 image:
-  repository: tamvlb/stroke-pred-api
+  repository: tamvlb/stroke_pred_api
   tag: latest
-  pullPolicy: IfNotPresent
-
-api:
-  containerPort: 7000
+  pullPolicy: Always
 
 service:
   type: NodePort
   port: 80
-  targetPort: 7000
+  appPort: 7000
+  metricPort: 8001
 
 ingress:
   enabled: false
