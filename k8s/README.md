@@ -251,11 +251,6 @@ kubectl get secret --namespace monitoring grafana-k8s -o jsonpath="{.data.admin-
 ### Customize alert rules from prometheus
 ![](../references/images/grafana_prometheus_alert.png)
 
-## How-to Guide Mlflow
-helm create mlflow-chart
-cd mlflow-chart/
-rm templates/hpa.yaml templates/tests/* templates/ingress.yaml templates/serviceaccount.yaml
-
 ## How-to Guide Fast API
 
 ### Create namespace
@@ -277,8 +272,95 @@ Remove unnecessary files:
 rm templates/hpa.yaml templates/tests/* templates/ingress.yaml templates/serviceaccount.yaml
 ```
 
-### Customize values.yaml
+### Customize values.yaml, templates/deployment.yaml and templates/services.yaml
+Since Kubernetes (Minikube) runs in a VM or a containerized environment and to run Model FastAPI serving,\
+we need MLflow and Jaeger services running with docker run or docker-compose are not inside the same network as your Kubernetes pods.\
+For model api deployed k8s to reach Mlflow and export tracing to Jaeger, make it reach your own host’s IP directly. \
+(Also check that firewall is not blocking the connection)
+**Get your host machine's IP address**
+```shell
+ip addr | grep inet
+```
+Look for something like inet 192.168.1xx.xx\
+Mine is **192.168.100.61**\
 
+**values.yaml**
+```shell
+replicaCount: 3 # deploy model api serving on k8s with 3 replica
+
+image:
+  repository: tamvlb/stroke_pred_api
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: NodePort # for end-user access
+  port: 80
+  appPort: 7000 # Model FastAPI port
+  metricPort: 8001 # FastAPI metrics port 
+
+env:
+  - name: MLFLOW_TRACKING_URI
+    value: http://192.168.100.61:5001 #http://[host’s IP]:[mlflow port]
+  - name: JAEGER_URI
+    value: http://192.168.100.61:4318/v1/traces #http://[host’s IP]:[jaeger otlp exporter end point]
+
+ingress:
+  enabled: false
+```
+
+**templates/deployment.yaml**
+```shell
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}  
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }} 
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }} 
+    spec:
+      containers:
+        - name: {{ .Release.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.appPort }}  
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: "{{ .value }}"
+{{- end }}
+```
+
+**templates/services.yaml**
+```shell
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Chart.Name }}
+  ports:
+    - protocol: TCP
+      name: appport
+      port: {{ .Values.service.appPort }}
+      targetPort: {{ .Values.service.appPort }}
+    - protocol: TCP
+      name: metricport
+      port: {{ .Values.service.metricPort }}
+      targetPort: {{ .Values.service.metricPort }}
+  type: NodePort
+```
 
 ### Install API helm chart
 ```shell
@@ -293,6 +375,33 @@ STATUS: deployed
 REVISION: 1
 TEST SUITE: None
 ```
+
+### Check installation status
+```shell
+kubectl get pods -n deployed-api
+```
+Expected output:
+```shell
+NAME                              READY   STATUS    RESTARTS   AGE
+stroke-api-k8s-5f56dd8d67-6c4wf   1/1     Running   0          52s
+stroke-api-k8s-5f56dd8d67-mbx7j   1/1     Running   0          52s
+stroke-api-k8s-5f56dd8d67-zlc24   1/1     Running   0          52s
+```
+
+```shell
+kubectl get svc -n deployed-api
+```
+Expected output:
+```shell
+NAME             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                         AGE
+stroke-api-k8s   NodePort   10.106.118.77   <none>        7000:32134/TCP,8001:30714/TCP   10s
+```
+Now you can access to your Model API deployed on k8s through
+```shell
+http://192.168.49.2:32134/docs # Model serving API
+http://192.168.49.2:30714/ # FastAPI Metric
+```
+![Model Serving API Deployed on K8S](../references/images/k8s_api_model_serving.png)
 
 
 
