@@ -1,10 +1,12 @@
 #!/bin/bash
 
 export DOCKER_COMPOSE_DIR=./service/model_api_serving/docker-compose.yaml
-export MLFLOW_URI=http://host.docker.internal:5000
+export MLFLOW_URI=http://172.17.0.1:5001
 export IMAGE_NAME=tamvlb/stroke_pred_api
 export IMAGE_TAG=latest
 export CONTAINER_NAME=stroke_pred_api
+export JAEGER_OTLP_URI=http://host.docker.internal:4318/v1/traces
+export METRICS_URI=0.0.0.0
 
 set -e  # exit on error
 
@@ -15,7 +17,7 @@ echo "Removing old container if exists..."
 docker rm stroke_pred_api || true
 
 echo "Remove old images"
-docker image rm tamvlb/stroke_pred_api:latest
+docker image rmi tamvlb/stroke_pred_api:latest
 
 echo "Pulling latest image..."
 docker pull tamvlb/stroke_pred_api:latest
