@@ -282,7 +282,7 @@ For model api deployed k8s to reach Mlflow and export tracing to Jaeger, make it
 ip addr | grep inet
 ```
 Look for something like inet 192.168.1xx.xx\
-Mine is **192.168.100.61**\
+Mine is **192.168.100.61**
 
 **values.yaml**
 ```shell
