@@ -21,6 +21,7 @@ This is an educational project focused on how to design and implement a MLOPs wo
 
 
 ## Repository’s structure
+```shell
 Stroke_pred_MLOPS/
     ├── dataset/                         # **Data directory**
     │   ├── raw_data/                    # Raw input data
@@ -61,6 +62,7 @@ Stroke_pred_MLOPS/
     │
     ├── requirements.txt                 # Python dependencies
     └── README.md                        # Project overview and documentation
+```
                                         
 
 
