@@ -60,7 +60,7 @@ Expected output
 ```
 
 ## PROMETHEUS, GRAFANA & JAEGER
-## Set up services
+### Set up services
 ```shell
 docker compose -f prom-graf-jaeger-docker-compose.yaml up -d
 ```
