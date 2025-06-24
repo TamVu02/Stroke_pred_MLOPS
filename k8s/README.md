@@ -276,7 +276,7 @@ rm templates/hpa.yaml templates/tests/* templates/ingress.yaml templates/service
 Since Kubernetes (Minikube) runs in a VM or a containerized environment and to run Model FastAPI serving,\
 we need MLflow and Jaeger services running with docker run or docker-compose are not inside the same network as your Kubernetes pods.\
 For model api deployed k8s to reach Mlflow and export tracing to Jaeger, make it reach your own host’s IP directly. \
-(Also check that firewall is not blocking the connection)
+(Also check that firewall is not blocking the connection)\
 **Get your host machine's IP address**
 ```shell
 ip addr | grep inet
