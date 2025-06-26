@@ -1,13 +1,14 @@
 # Stroke Prediction Model Deployment
-    **Table of contents**
-        Introduction
-        Repository’s structure
-        Prerequisites installation
-        Deploy Docker services
-        Deploy K8S services
+**Table of contents**\
+    1. Introduction\
+    2. Repository’s structure\
+    3. Prerequisites installation\
+    4. Deploy Docker services\
+    5. Deploy K8S services
 
 ## Introduction
 This is an educational project focused on how to design and implement a MLOPs workflow. This repo provides a comprehensive guide on building and deploying machine learning models through a complete pipeline, incorporating CI/CD practices and resource management, when also demonstrates the practical application of MLOps solutions to address real-world challenges in deploying AI/ML systems at scale.
+![MLOPs pipeline](references/images/MLOPs_flow.jpg)
 - Source code versioning and control: Git/Github
 - Containerization: Docker
 - Manage and orchestrate containerized applications: K8S, Helm
@@ -63,6 +64,81 @@ Stroke_pred_MLOPS/
     ├── requirements.txt                 # Python dependencies
     └── README.md                        # Project overview and documentation
 ```
-                                        
+
+## Prerequisites installation
+```shell
+pip install requirements.txt
+```                         
+
+
+## Deploy Docker services
+**See more details about installation in /service/README.md**
+### MLFLOW
+```shell
+cd service/mlflow/
+docker-compose up --build
+```
+
+### MODEL SERVING API
+```shell
+cd service/model_api_serving/
+docker-compose up --build
+```
+
+### JAEGER TRACING & PROMETHEUS & GRAFANA
+```shell
+cd service/
+docker compose -f prom-graf-jaeger-docker-compose.yaml up -d
+```
+
+### ELK
+```shell
+cd service/elk/
+docker compose -f elk-docker-compose.yml up -d # Set up ELastic search and Kibana
+docker compose -f elk-docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up # Set up Filebeat
+```
+
+### JENKINS
+```shell
+cd service/jenkins/
+docker-compose up --build
+```
+
+## Deploy K8S services
+**See more details about installation in /k8s/README.md**
+### PREPARATION
+```shell
+minikube start
+kubectl create namespace monitoring
+kubectl create namespace deployed-api
+```
+
+### PROMETHEUS
+```shell
+cd k8s/prometheus_chart/
+helm install prometheus-k8s ./prometheus --namespace monitoring
+kubectl expose service prometheus-k8s-server \
+  --namespace monitoring \
+  --type=NodePort \
+  --target-port=9090 \
+  --name=prometheus-k8s-server-ext
+```
+
+### GRAFANA
+```shell
+cd k8s/grafana_chart/
+helm install grafana-k8s ./grafana --namespace monitoring
+kubectl expose service grafana-k8s \
+  --namespace monitoring \
+  --type=NodePort \
+  --target-port=3000 \
+  --name=grafana-k8s-ext
+```
+
+### MODEL SERVING API
+```shell
+cd k8s/stroke-api-chart/
+helm install stroke-api-k8s . -n deployed-api
+```
 
 
