@@ -78,6 +78,10 @@ pip install requirements.txt
 cd service/mlflow/
 docker-compose up --build
 ```
+Run training script to push model to MLflow. Training script is available in:
+```shell
+/src/train_src/registry_model_2_mlflow.py
+```
 
 ### MODEL SERVING API
 ```shell
